@@ -12,19 +12,7 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 
 import os
 
-from config.env import  BASE_DIR, env
-# print('=====================================' , BASE_DIR)
-env.read_env(os.path.join(BASE_DIR, ".env"))
-
-# SECRET_KEY = 'django-insecure-c*u9$me361%(uc9i#dr75l54!2ev87n4z^#utebx&+y!hqkoc*'
-
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = env("SECRET_KEY")
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env.bool("DJANGO_DEBUG")
-
-ALLOWED_HOSTS = os.getenv('DJANGO_ALLOWED_HOSTS', '').split(',')
+from config.env import BASE_DIR
 
 
 REST_FRAMEWORK = {
@@ -32,7 +20,7 @@ REST_FRAMEWORK = {
 }
 
 # Application definition
-DEFAULT_APPS  = [
+DEFAULT_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -48,12 +36,11 @@ THIRD_PARTY_APPS = [
 ]
 
 LOCAL_APPS = [
-'apps.Bidding_Projects'
+ 'apps.users',
 ]
 
 
 INSTALLED_APPS = DEFAULT_APPS + THIRD_PARTY_APPS + LOCAL_APPS
-
 
 
 MIDDLEWARE = [
@@ -120,7 +107,6 @@ USE_I18N = True
 USE_TZ = True
 
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
@@ -129,18 +115,7 @@ STATIC_URL = "/static/"
 # STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 MEDIA_URL = '/media/'
-MEDIA_ROOT =  os.path.join(BASE_DIR, "media")
-
-
-# Base URLs
-DJANGO_BASE_BACKEND_URL = env("DJANGO_BASE_BACKEND_URL")
-DJANGO_BASE_FRONTEND_URL = env("DJANGO_BASE_FRONTEND_URL")
-
-# Full URLs
-BASE_URL_FOR_AUTHENTICATION = f"{DJANGO_BASE_BACKEND_URL}{env('BASE_URL_FOR_AUTHENTICATION')}"
-BASE_URL_FOR_HomeAndSearch = f"{DJANGO_BASE_BACKEND_URL}{env('BASE_URL_FOR_HomeAndSearch')}"
-BASE_URL_FOR_SINGLESERVICEPROVIDER = f"{DJANGO_BASE_BACKEND_URL}{env('BASE_URL_FOR_SINGLESERVICEPROVIDER')}"
-BASE_URL_FOR_TasksManagement = f"{DJANGO_BASE_BACKEND_URL}{env('BASE_URL_FOR_TasksManagement')}"
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 
 from config.settings.celery import *  # noqa
@@ -148,3 +123,4 @@ from config.settings.cors import *  # noqa
 from config.settings.sessions import *  # noqa
 from config.settings.DB_Config import *  # noqa
 from config.settings.email_sending import *  # noqa
+from .config_selector import *  # noqa: F403 F401 E402
