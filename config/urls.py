@@ -22,4 +22,3 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path('Bidding_projects/', include('apps.Bidding_Projects.urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-
