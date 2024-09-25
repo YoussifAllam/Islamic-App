@@ -1,15 +1,17 @@
 import environ  # ignore:E402
 from django.core.exceptions import ImproperlyConfigured
 from os.path import join
+from typing import Type, Any
+import enum
 env = environ.Env()
 
 BASE_DIR = environ.Path(__file__) - 2
-APPS_DIR = BASE_DIR.path("Bidding_and_Compare\apps")
+APPS_DIR = BASE_DIR.path(f"{BASE_DIR}\apps")
 
 env.read_env(env.str('ENV_PATH', default=join(BASE_DIR, '.env')))
 
 
-def env_to_enum(enum_cls, value):
+def env_to_enum(enum_cls: Type[enum.Enum], value: Any) -> enum.Enum:
     for x in enum_cls:
         if x.value == value:
             return x
