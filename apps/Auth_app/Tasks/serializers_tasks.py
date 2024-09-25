@@ -20,8 +20,8 @@ def validate_password_strength(value):
     return value
 
 
-def generate_unique_username(name, User: User):
-    base_username = re.sub(r"\s+", "_", name).lower()
+def generate_unique_username(first_name, last_name, User: User):
+    base_username = re.sub(r"\s+", "_", f"{first_name}_{last_name}").lower()
     while True:
         random_number = randint(1000, 9999)
         unique_username = f"{base_username}_{random_number}"

@@ -15,7 +15,7 @@ import os
 from config.env import BASE_DIR
 
 
-REST_FRAMEWORK = {
+REST_FRAMEWORK: dict = {  # ignore
 
 }
 

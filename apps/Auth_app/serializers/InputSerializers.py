@@ -36,23 +36,27 @@ class SignUpSerializer(ModelSerializer):
         extra_kwargs = {
             "password": {"write_only": True},
             "username": {"read_only": True},
+            "last_name": {"required": True},
+            "first_name": {"required": True},
+            "email": {"required": True},
         }
 
-    def validate_email(self, value):
+    def validate_email(self, value: str):
         return serializers_tasks.validate_email(value, User)
 
-    def validate_password(self, value):
+    def validate_password(self, value: str):
         return serializers_tasks.validate_password_strength(value)
 
-    def validate(self, data):
+    def validate(self, data: dict):
         if data.get("password") != data.get("confirm_password"):
             raise ValidationError("Passwords do not match.")
         if not data.get("accept_terms"):
             raise ValidationError("Terms and conditions must be accepted.")
         return data
 
-    def create(self, validated_data):
-        name = validated_data["first_name"]
-        unique_username = serializers_tasks.generate_unique_username(name, User)
+    def create(self, validated_data: dict):
+        first_name = validated_data["first_name"]
+        last_name = validated_data["last_name"]
+        unique_username = serializers_tasks.generate_unique_username(first_name, last_name, User)
         created_user = services.Create_user(validated_data, unique_username)
         return created_user
