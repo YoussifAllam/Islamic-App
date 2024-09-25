@@ -1,6 +1,5 @@
 from ..models import User
 from django.http import HttpRequest
-
 from random import randint
 from django.utils import timezone
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -17,7 +16,6 @@ from rest_framework_simplejwt.token_blacklist.models import (
     BlacklistedToken,
 )
 from django.contrib.auth import logout
-
 from ..serializers import OutputSerializers
 from .. import constant
 

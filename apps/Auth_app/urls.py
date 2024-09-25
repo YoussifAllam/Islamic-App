@@ -19,7 +19,11 @@ url_Auth = [
         name="send-reset-otp",
     ),
     path("Login/", views.LoginView.as_view()),
-    path("refresh-Token/", TokenRefreshView.as_view(), name="token_refresh"),
+    path(
+        "refresh-Token/",
+        TokenRefreshView.as_view(),
+        name="token_refresh"
+    ),
 ]
 
 url_Password = [
