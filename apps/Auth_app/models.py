@@ -32,7 +32,7 @@ class User(AbstractUser):
         verbose_name='user permissions',
     )
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self.username
 
 
@@ -43,7 +43,7 @@ class Profile(models.Model):
 
 
 @receiver(post_save, sender=User)
-def save_profile(sender, instance, created, **kwargs):
+def save_profile(sender: type, instance: User, created: bool, **kwargs: dict) -> None:
     if created:
         Profile.objects.get_or_create(user=instance)
     else:

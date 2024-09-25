@@ -1,7 +1,7 @@
 import socket
 
 
-def get_host_name():
+def get_host_name() -> str:
     return socket.gethostname()
 
 

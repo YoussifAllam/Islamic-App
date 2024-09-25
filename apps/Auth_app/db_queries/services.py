@@ -1,11 +1,10 @@
 from ..models import User
 from django.http import HttpRequest
-import json
 from django.contrib.auth.hashers import make_password
 from ..serializers import OutputSerializers
 
 
-def Create_user(validated_data: json, unique_username: str) -> User:
+def Create_user(validated_data: dict, unique_username: str) -> User:
     user = User.objects.create_user(
         username=unique_username,
         email=validated_data["email"],
@@ -18,7 +17,7 @@ def Create_user(validated_data: json, unique_username: str) -> User:
     return user
 
 
-def create_user_for_google_login(user_info: json) -> User:
+def create_user_for_google_login(user_info: dict) -> User:
     user = User.objects.create(
         email=user_info.get("email"),
         username=user_info.get("email"),
@@ -29,7 +28,7 @@ def create_user_for_google_login(user_info: json) -> User:
     return user
 
 
-def update_user_info(request: HttpRequest) -> json:
+def update_user_info(request: HttpRequest) -> dict:
     user = request.user
     data = request.data
 

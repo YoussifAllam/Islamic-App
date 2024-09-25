@@ -1,4 +1,4 @@
-import environ
+import environ  # ignore:E402
 from django.core.exceptions import ImproperlyConfigured
 from os.path import join
 env = environ.Env()

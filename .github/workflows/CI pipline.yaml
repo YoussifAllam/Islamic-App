@@ -35,21 +35,21 @@ jobs:
         uses: actions/setup-python@v2
         with:
           python-version: '3.11' # if you want multiple python versions run just use matrix strategy in job config. See the documentation of GitHub Actions
-      
+          
       - name: Check Python version # checking the python version to see if 3.x is installed.
         run: python --version
 
       - name: Install requirements # install application requirements
-        run: pip install -r requirements.txt || { echo 'install requirements failed'; exit 1; }
+        run: pip install -r requirements.txt
 
       - name: Check Code Quality with flake8 # Run flake8 to check code quality
-        run: flake8 . || { echo 'flake8 failed'; exit 1; }
+        run: flake8 .
 
       - name: Run Migrations # run migrations to create tables in the sidecar db container
-        run: python manage.py migrate || { echo 'Migrations failed'; exit 1; }
+        run: python manage.py migrate
         
-      - name: Run Test # running tests
-        run: python manage.py test || { echo 'Tests failed'; exit 1; }
+      - name: Run Tests # running tests
+        run: python manage.py test
       
       - name: Run Django Development Server
         run: |

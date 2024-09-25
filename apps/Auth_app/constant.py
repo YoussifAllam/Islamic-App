@@ -3,7 +3,7 @@ CURRENT_SITE = "emily.sa"
 rest_password_url = env('REST_PASSWORD_URL')
 
 
-def create_otp_template(user_name, OTP, user_email):
+def create_otp_template(user_name: str, OTP: str, user_email: str):
     otp_template = f"""
     <!DOCTYPE html>
     <html lang="en">
@@ -140,7 +140,7 @@ def create_otp_template(user_name, OTP, user_email):
 
 
 def create_password_reset_template(
-    user_name, reset_link, operating_system, browser_name
+    user_name: str, reset_link: str, operating_system: str, browser_name: str
 ):
     reset_template = f""" # noqa
 		<!DOCTYPE html>
