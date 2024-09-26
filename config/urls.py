@@ -16,9 +16,13 @@ Including another URLconf
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.urls import include, path # noqa
+from django.urls import include, path
+from django.views.decorators.csrf import csrf_exempt
+from prometheus_client import make_wsgi_app
 
 urlpatterns = [
     path("admin/", admin.site.urls),
     # path('Bidding_projects/', include('apps.Bidding_Projects.urls')),
+    path("prometheus/", include("django_prometheus.urls")),
+    path('metrics/', csrf_exempt(make_wsgi_app())),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

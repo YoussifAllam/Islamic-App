@@ -33,6 +33,7 @@ THIRD_PARTY_APPS = [
     "rest_framework",
     "django_filters",
     "corsheaders",
+    "django_prometheus",
 ]
 
 LOCAL_APPS = [
@@ -43,8 +44,7 @@ LOCAL_APPS = [
 INSTALLED_APPS = DEFAULT_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 
-MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
+BASIC_MIDDLEWARES = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -53,8 +53,14 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'allauth.account.middleware.AccountMiddleware',
-
 ]
+
+MIDDLEWARE = (
+    ["django_prometheus.middleware.PrometheusBeforeMiddleware",
+     'corsheaders.middleware.CorsMiddleware',]
+    + BASIC_MIDDLEWARES
+    + ["django_prometheus.middleware.PrometheusAfterMiddleware"]
+)
 
 ROOT_URLCONF = 'config.urls'
 
