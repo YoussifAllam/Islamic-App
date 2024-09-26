@@ -1,5 +1,14 @@
 version: '3.8'
 
+networks:
+  monitoring:
+    driver: bridge
+
+volumes:
+  prometheus_data: {}
+  grafana-data: {}
+  django_db_data: {}  # Add a volume for Django database persistence, if needed
+
 services:
   django:
     build:
@@ -7,7 +16,7 @@ services:
       dockerfile: Docker/Dockerfile
     container_name: Islamic_app
     command: >
-      bash -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+      bash -c "python manage.py makemigrations &&python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
     volumes:
       - ..:/code
       - ./code/db:/code/db  # Ensure SQLite database file persists in the directory
@@ -61,3 +70,32 @@ services:
       interval: 30s
       timeout: 10s
       retries: 5
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    restart: unless-stopped
+    volumes:
+      - ../prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--web.enable-lifecycle'
+    ports:
+      - 9090:9090
+    networks:
+      - monitoring
+
+  grafana:
+    image: grafana/grafana-oss:latest
+    container_name: grafana
+    ports:
+      - '3001:3000'
+    volumes:
+      - grafana-data:/var/lib/grafana
+    restart: unless-stopped
+    networks:
+      - monitoring

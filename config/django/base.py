@@ -37,14 +37,14 @@ THIRD_PARTY_APPS = [
 ]
 
 LOCAL_APPS = [
- 'apps.Auth_app',
+ 'apps.Users',
 ]
 
 
 INSTALLED_APPS = DEFAULT_APPS + THIRD_PARTY_APPS + LOCAL_APPS
 
 
-BASIC_MIDDLEWARES = [
+BASIC_MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -56,9 +56,11 @@ BASIC_MIDDLEWARES = [
 ]
 
 MIDDLEWARE = (
-    ["django_prometheus.middleware.PrometheusBeforeMiddleware",
-     'corsheaders.middleware.CorsMiddleware',]
-    + BASIC_MIDDLEWARES
+    [
+     "django_prometheus.middleware.PrometheusBeforeMiddleware",
+     'corsheaders.middleware.CorsMiddleware',
+    ]
+    + BASIC_MIDDLEWARE
     + ["django_prometheus.middleware.PrometheusAfterMiddleware"]
 )
 

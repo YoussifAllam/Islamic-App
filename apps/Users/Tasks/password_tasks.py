@@ -7,7 +7,7 @@ from django.core.mail import send_mail
 from django.conf import settings
 from django.contrib.auth.hashers import make_password
 from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_200_OK
-import constant
+from .. import constant
 
 current_site = constant.CURRENT_SITE
 
