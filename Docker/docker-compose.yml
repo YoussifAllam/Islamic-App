@@ -16,7 +16,7 @@ services:
       dockerfile: Docker/Dockerfile
     container_name: Islamic_app
     command: >
-      bash -c "python manage.py makemigrations &&python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+      bash -c "python manage.py makemigrations --noinput &&python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
     volumes:
       - ..:/code
       - ./code/db:/code/db  # Ensure SQLite database file persists in the directory
@@ -35,7 +35,7 @@ services:
       context: ..
       dockerfile: Docker/Dockerfile
     container_name: Islamic_celery
-    command: celery -A config worker -l info
+    command: celery -A config.settings.celery worker -l info
     volumes:
       - ..:/code
       - ./code/db:/code/db  # Ensure SQLite database file persists in the directory
@@ -51,7 +51,7 @@ services:
       context: ..
       dockerfile: Docker/Dockerfile
     container_name: Islamic_celery_beat
-    command: celery -A config beat -l info
+    command: celery -A config.settings.celery beat -l info
     volumes:
       - ..:/code
       - ./code/db:/code/db  # Ensure SQLite database file persists in the directory

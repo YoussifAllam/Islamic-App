@@ -130,4 +130,4 @@ from config.settings.celery import *  # noqa
 from config.settings.cors import *  # noqa
 from config.settings.sessions import *  # noqa
 from config.settings.email_sending import *  # noqa
-from .config_selector import *  # noqa: F403 F401 E402
+# from .config_selector import *  # noqa: F403 F401 E402

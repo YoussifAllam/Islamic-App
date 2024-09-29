@@ -14,7 +14,7 @@ class User(AbstractUser):
     otp = models.IntegerField(default=0)
     otp_created_at = models.DateTimeField(auto_now_add=True)
     accept_terms = models.BooleanField(default=False)
-    created_Date = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True)
     last_login = models.DateTimeField(auto_now_add=True)
 
     groups = models.ManyToManyField(
@@ -45,8 +45,8 @@ class Profile(models.Model):
 @receiver(post_save, sender=User)
 def save_profile(sender: type, instance: User, created: bool, **kwargs: dict) -> None:
     if created:
-        Profile.objects.get_or_create(user=instance)
+        Profile.objects.get_or_create(user=instance)  # ignore the error
     else:
         # For existing users without a profile, create one
         if not hasattr(instance, "profile"):
-            Profile.objects.get_or_create(user=instance)
+            Profile.objects.get_or_create(user=instance)  # ignore
