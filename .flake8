@@ -8,4 +8,4 @@ exclude =
     venv,
     static,
     manage.py
-plugins = flake8_django
+plugins = flake8_django 
