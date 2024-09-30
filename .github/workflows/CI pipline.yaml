@@ -102,7 +102,7 @@ jobs:
 
       - name: Build services
         run: |
-          docker compose -f docker-compose.yaml build
+          docker compose -f Docker/docker-compose.yaml build
 
       - name: Tag images
         run: |
