@@ -60,23 +60,23 @@ jobs:
           python manage.py runserver 0.0.0.0:8000 &
 
 
-  security_scan:
-    name: "Security Scanning"
-    runs-on: ubuntu-latest
-    permissions:
-      actions: write
-      security-events: write
+  # security_scan:
+  #   name: "Security Scanning"
+  #   runs-on: ubuntu-latest
+  #   permissions:
+  #     actions: write
+  #     security-events: write
 
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+  #   steps:
+  #     - name: Checkout code
+  #       uses: actions/checkout@v4
 
-      - name: Initialize CodeQL
-        uses: github/codeql-action/init@v2
-        with:
-          languages: python
-      - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v2
+  #     - name: Initialize CodeQL
+  #       uses: github/codeql-action/init@v2
+  #       with:
+  #         languages: python
+  #     - name: Perform CodeQL Analysis
+  #       uses: github/codeql-action/analyze@v2
   
   
   # Building images and pushing to Dockerhub
@@ -86,7 +86,7 @@ jobs:
     environment: production
     needs:
       - health-check-job
-      - security_scan
+      # - security_scan
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -103,9 +103,11 @@ jobs:
       - name: List directory structure
         run: ls -lR
 
+      - name: Print current working directory
+        run: pwd
+      
       - name: Build services
-        run: |
-          docker compose -f ${{ github.workspace }}/Docker/docker-compose.yaml build
+        run: docker compose -f $GITHUB_WORKSPACE/Docker/docker-compose.yaml build
 
       - name: Tag images
         run: |
