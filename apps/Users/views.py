@@ -14,6 +14,9 @@ from .serializers import InputSerializers
 from .permissions import IsAdminOrPostOnly
 from .Tasks import Auth_tasks, password_tasks, google_auth_tasks
 from .db_queries import selectors, services
+from rest_framework.request import Request
+from typing import Any
+from django.http import HttpResponseRedirect
 
 
 class SignUPViewSet(viewsets.ModelViewSet):
@@ -22,7 +25,7 @@ class SignUPViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAdminOrPostOnly]
     lookup_field = "uuid"
 
-    def create(self, request):
+    def create(self, request: Request) -> Response:
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
             user = serializer.save()
@@ -33,18 +36,18 @@ class SignUPViewSet(viewsets.ModelViewSet):
         return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
     @action(detail=False, methods=["post"])
-    def confirm_email(self, request):
+    def confirm_email(self, request: Request) -> Response:
         Response_data, Response_status = Auth_tasks.conferm_email_using_otp(request)
         return Response(Response_data, status=Response_status)
 
     @action(detail=False, methods=["post"])
-    def send_reset_otp(self, request):
+    def send_reset_otp(self, request: Request) -> Response:
         Response_data, Response_status = Auth_tasks.send_reset_otp(request)
         return Response(Response_data, status=Response_status)
 
 
 class LoginView(TokenObtainPairView):
-    def post(self, request, *args, **kwargs):
+    def post(self, request: Request, *args: Any, **kwargs: Any) -> Response:
         Response_data, Response_status = Auth_tasks.Login(request)
         return Response(Response_data, Response_status)
 
@@ -53,25 +56,25 @@ class UserInfo(APIView):
     permission_classes = [IsAuthenticated]
     parser_classes = (MultiPartParser, FormParser)
 
-    def get(self, request):
+    def get(self, request: Request) -> Response:
         Response_data = selectors.get_user_info(request)
         return Response(
             {"status": "success", "data": Response_data}, status=HTTP_200_OK
         )
 
-    def put(self, request):
+    def put(self, request: Request) -> Response:
         Response_data = services.update_user_info(request)
         return Response(Response_data, HTTP_200_OK)
 
 
 class ForgetPasswordView(APIView):
-    def post(self, request):
+    def post(self, request: Request) -> Response:
         Response_data, Response_status = password_tasks.forget_password(request)
         return Response(Response_data, status=Response_status)
 
 
 class ResetPasswordView(APIView):
-    def post(self, request, token):
+    def post(self, request: Request, token: str) -> Response:
         Response_data, Response_status = password_tasks.reset_password(request, token)
         return Response(Response_data, status=Response_status)
 
@@ -82,19 +85,18 @@ class PublicApi(APIView):
 
 
 class GoogleLoginRedirectView(PublicApi):
-    def get(self, request, *args, **kwargs):
+    def get(self, request: Request, *args: Any, **kwargs: Any) -> HttpResponseRedirect:
         google_login_flow = google_auth_tasks.GoogleRawLoginFlowService()
 
         authorization_url, state = google_login_flow.get_authorization_url()
 
         request.session["google_oauth2_state"] = state
 
-        # redirect to authorization_url
         return redirect(authorization_url)
 
 
 class GoogleLoginCallbackView(PublicApi):
-    def get(self, request, *args, **kwargs):
+    def get(self, request: Request, *args: Any, **kwargs: Any) -> Response:
         Response_data, Response_status = google_auth_tasks.google_login(request)
         return Response(Response_data, status=Response_status)
 
@@ -102,6 +104,6 @@ class GoogleLoginCallbackView(PublicApi):
 class APILogoutView(APIView):
     permission_classes = (IsAuthenticated,)
 
-    def post(self, request, *args, **kwargs):
+    def post(self, request: Request, *args: Any, **kwargs: Any) -> Response:
         Response_data = Auth_tasks.Logout(self, request, *args, **kwargs)
         return Response(Response_data, status=HTTP_200_OK)

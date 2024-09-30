@@ -1,4 +1,3 @@
-from ..models import User
 from django.http import HttpRequest
 from random import randint
 from django.utils import timezone
@@ -16,9 +15,13 @@ from rest_framework_simplejwt.token_blacklist.models import (
     BlacklistedToken,
 )
 from django.contrib.auth import logout
+from rest_framework.request import Request
+from typing import Any
+from datetime import timedelta, datetime
+from . import celery_tasks
 from ..serializers import OutputSerializers
 from .. import constant
-
+from ..models import User
 current_site = constant.CURRENT_SITE
 
 
@@ -34,7 +37,8 @@ def send_otp_to_user_email(user: User) -> dict:
 
     subject = "Your verification OTP on {0}".format(current_site)
     message = f"Your verification OTP is: {otp}"
-    user.email_user(subject, message)
+    # user.email_user(subject, message)
+    celery_tasks.send_otp_email_task.delay(user.id, otp, subject, message)
 
     refresh = RefreshToken.for_user(user)
     token_data = {
@@ -44,15 +48,15 @@ def send_otp_to_user_email(user: User) -> dict:
     return token_data
 
 
-def is_otp_valid(otp_created_at: timezone.datetime):
+def is_otp_valid(otp_created_at: datetime) -> bool:
     if otp_created_at:
-        expiration_time = otp_created_at + timezone.timedelta(minutes=15)
+        expiration_time = otp_created_at + timedelta(minutes=15)
         return timezone.now() <= expiration_time
     else:
         return False
 
 
-def conferm_email_using_otp(request: HttpRequest):
+def conferm_email_using_otp(request: HttpRequest) -> tuple[dict, int]:
     user_uuid = request.data.get("user_uuid")
     otp = request.data.get("otp")
 
@@ -78,7 +82,7 @@ def conferm_email_using_otp(request: HttpRequest):
         return ({"detail": "Invalid user ID."}, HTTP_400_BAD_REQUEST)
 
 
-def send_reset_otp(request: HttpRequest):
+def send_reset_otp(request: HttpRequest) -> tuple[dict, int]:
     email = request.data.get("email")
     if not email:
         return ({"detail": "Missing email."}, HTTP_400_BAD_REQUEST)
@@ -97,7 +101,7 @@ def send_reset_otp(request: HttpRequest):
         return ({"detail": "User not found."}, HTTP_404_NOT_FOUND)
 
 
-def Login(request: HttpRequest):
+def Login(request: HttpRequest) -> tuple[dict, int]:
     email = request.data.get("email")
     password = request.data.get("password")
     print(email, password)
@@ -141,14 +145,14 @@ def Login(request: HttpRequest):
         return ({"message": "Email or Password Error"}, HTTP_401_UNAUTHORIZED)
 
 
-def Logout(self, request, *args, **kwargs):
+def Logout(self, request: Request, *args: Any, **kwargs: Any) -> dict:  # type: ignore
     if self.request.data.get("all"):
         token: OutstandingToken
-        for token in OutstandingToken.objects.filter(user=request.user):
-            _, _ = BlacklistedToken.objects.get_or_create(token=token)
+        for token in OutstandingToken.objects.filter(user=request.user):  # type: ignore
+            _, _ = BlacklistedToken.objects.get_or_create(token=token)  # type: ignore
         return {"status": "OK, goodbye, all refresh tokens blacklisted"}
     refresh_token = self.request.data.get("refresh_token")
-    token = RefreshToken(token=refresh_token)
-    token.blacklist()
+    token = RefreshToken(token=refresh_token)  # type: ignore
+    token.blacklist()  # type: ignore
     logout(request)
     return {"status": "OK, goodbye"}

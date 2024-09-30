@@ -1,4 +1,2 @@
 @echo off
-
-start powershell -NoExit -Command "$Host.UI.RawUI.WindowTitle = 'Islamc App'; & '.\venv\Scripts\activate'; code .;  python manage.py runserver"
-
+start powershell -NoExit -Command "$Host.UI.RawUI.WindowTitle = 'Islamic App1'; & code .; cd Docker; docker-compose up --build"
