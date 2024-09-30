@@ -100,9 +100,12 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: List directory structure
+        run: ls -lR
+
       - name: Build services
         run: |
-          docker compose -f Docker/docker-compose.yaml build
+          docker compose -f ${{ github.workspace }}/Docker/docker-compose.yaml build
 
       - name: Tag images
         run: |
