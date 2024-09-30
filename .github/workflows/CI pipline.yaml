@@ -107,7 +107,7 @@ jobs:
         run: pwd
       
       - name: Build services
-        run: docker compose -f $GITHUB_WORKSPACE/Docker/docker-compose.yaml build
+        run: docker compose -f $GITHUB_WORKSPACE/Docker/docker-compose.yml build
 
       - name: Tag images
         run: |
