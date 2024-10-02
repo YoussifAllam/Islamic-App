@@ -113,3 +113,6 @@ jobs:
 
       - name: Push image to DockerHub
         run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/django_project:latest
+
+
+        
