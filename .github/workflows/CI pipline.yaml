@@ -109,9 +109,19 @@ jobs:
       - name: Build services
         run: docker compose -f $GITHUB_WORKSPACE/Docker/docker-compose.yml build
 
-      - name: push images
+      - name: Build and tag images
         run: |
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/portfolio-django_gunicorn:latest
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/portfolio-nginx:latest
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/portfolio-certbot:latest
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/portfolio-django_project:latest -f $GITHUB_WORKSPACE/Docker/Dockerfile.django .
+
+      # - name: Tag images
+      #   run: |
+      #     docker tag portfolio-django_project:latest ${{ secrets.DOCKERHUB_USERNAME }}/portfolio-django_project:latest
+      #   # docker tag portfolio-nginx:latest ${{ secrets.DOCKERHUB_USERNAME }}/portfolio-nginx:latest
+      #   # docker tag portfolio-certbot:latest ${{ secrets.DOCKERHUB_USERNAME }}/portfolio-certbot:latest
+
+      # - name: push images
+      #   run: |
+      #     docker push ${{ secrets.DOCKERHUB_USERNAME }}/portfolio-django_project:latest
+      #   # docker push ${{ secrets.DOCKERHUB_USERNAME }}/portfolio-nginx:latest
+      #   # docker push ${{ secrets.DOCKERHUB_USERNAME }}/portfolio-certbot:latest
 
