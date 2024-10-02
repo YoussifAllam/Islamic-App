@@ -26,7 +26,7 @@ jobs:
 
 
       - name: Cache dependency # caching dependency will make our build faster.
-        uses: actions/cache@v2 # for more info check pip section documentation at https://github.com/actions/cache
+        uses: actions/cache@v2 
         with:
           path: ~/.cache/pip
           key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
@@ -111,3 +111,5 @@ jobs:
       - name: Build and tag images
         run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/django_project:latest -f $GITHUB_WORKSPACE/Docker/Dockerfile .
 
+      - name: Push image to DockerHub
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/django_project:latest
