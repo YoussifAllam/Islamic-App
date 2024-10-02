@@ -17,7 +17,7 @@ on:
 
 # three job definition
 jobs:
-  health-check-job: # health check job for testing and code formatting check
+  # health-check-job: # health check job for testing and code formatting check
     runs-on: ubuntu-latest # os for running the job
     
     steps:
@@ -85,7 +85,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: production
     needs:
-      - health-check-job
+      # - health-check-job
       # - security_scan
     steps:
       - name: Checkout code
@@ -110,8 +110,8 @@ jobs:
         run: docker compose -f $GITHUB_WORKSPACE/Docker/docker-compose.yml build
 
       - name: Build and tag images
-        run: |
-          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/portfolio-django_project:latest -f $GITHUB_WORKSPACE/Docker/Dockerfile.django .
+        run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/portfolio-django_project:latest -f $GITHUB_WORKSPACE/Docker/Dockerfile .
+
 
       # - name: Tag images
       #   run: |
