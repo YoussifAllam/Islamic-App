@@ -6,5 +6,5 @@ media
 staticfiles
 desktop.ini
 celerybeat-schedule
-.env
+#todo .env 
 debug.log
