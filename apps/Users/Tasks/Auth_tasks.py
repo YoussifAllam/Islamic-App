@@ -36,9 +36,11 @@ def send_otp_to_user_email(user: User) -> dict:
     # Send the OTP to the user via email
 
     subject = "Your verification OTP on {0}".format(current_site)
-    message = f"Your verification OTP is: {otp}"
+    html_message = constant.create_otp_template(
+                f"{user.first_name} {user.last_name}", otp, user.email
+            )
     # user.email_user(subject, message)
-    celery_tasks.send_email_task.delay(user.id,  subject, message)
+    celery_tasks.send_email_task.delay(user.id,  subject, html_message)
 
     refresh = RefreshToken.for_user(user)
     token_data = {
@@ -93,8 +95,10 @@ def send_reset_otp(request: HttpRequest) -> tuple[dict, int]:
         user.save()
 
         subject = "Your reset OTP on {0}".format(current_site)
-        message = f"Your reset OTP is: {otp}"
-        user.email_user(subject, message)
+        html_message = constant.create_otp_template(
+                f"{user.first_name} {user.last_name}", otp, user.email
+            )
+        celery_tasks.send_email_task.delay(user.id,  subject, html_message)
 
         return ({"detail": "Reset OTP sent successfully."}, HTTP_200_OK)
     except User.DoesNotExist:

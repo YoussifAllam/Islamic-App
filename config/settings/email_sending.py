@@ -11,8 +11,3 @@ EMAIL_HOST_USER = getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = getenv('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 EMAIL_DEBUG = True  # This will log SMTP communication
-
-logger.warning(f""" email sending settings: {EMAIL_HOST} {EMAIL_PORT} {EMAIL_USE_TLS}
-                {EMAIL_USE_SSL}
-             {EMAIL_HOST_USER} {EMAIL_HOST_PASSWORD} {DEFAULT_FROM_EMAIL}""")
-

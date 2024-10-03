@@ -3,7 +3,7 @@ CURRENT_SITE = "emily.sa"
 rest_password_url = env('REST_PASSWORD_URL')
 
 
-def create_otp_template(user_name: str, OTP: str, user_email: str):
+def create_otp_template(user_name: str, OTP: int, user_email: str):  # ignore:E501
     otp_template = f"""
     <!DOCTYPE html>
     <html lang="en">

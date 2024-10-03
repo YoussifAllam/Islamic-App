@@ -3,22 +3,22 @@ from django.utils.crypto import get_random_string
 from datetime import datetime, timedelta
 from django.http import HttpRequest
 from ..models import User
-from django.core.mail import send_mail
-from django.conf import settings
 from django.contrib.auth.hashers import make_password
 from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_200_OK
 from .. import constant
+from . import celery_tasks
+from user_agents import parse
 
 current_site = constant.CURRENT_SITE
 
 
-def get_current_host(request):
+def get_current_host(request: HttpRequest) -> str:
     protocol = request.is_secure() and "https" or "http"
     host = request.get_host()
     return "{protocol}://{host}/".format(protocol=protocol, host=host)
 
 
-def forget_password(request: HttpRequest):
+def forget_password(request: HttpRequest) -> tuple[dict, int]:
     email = request.data.get("email", None)
     if not email:
         return ({"message": "Email missing"}, HTTP_400_BAD_REQUEST)
@@ -30,21 +30,26 @@ def forget_password(request: HttpRequest):
     user.profile.reset_password_expire = expire_date
     user.profile.save()
 
-    link = f"{constant.rest_password_url}/{token}".format(token=token)
-    body = "Your password reset link is : {link}".format(link=link)
-    send_mail(
-        f"Paswword reset from {current_site}",
-        body,
-        f"{settings.EMAIL_HOST_USER}",
-        [email],
+    subject = "Password reset on {0}".format(current_site)
+    reset_link = f"{constant.rest_password_url}?token={token}"
+    operating_system, browser_name = get_device_info(request)
+
+    # Use the template creation function to generate the email body
+    body = constant.create_password_reset_template(
+        f"{user.first_name} {user.last_name}",
+        reset_link,
+        operating_system,
+        browser_name,
     )
+    
+    celery_tasks.send_email_task.delay(user.id,  subject, body)
     return (
         {"details": "Password reset sent to {email}".format(email=email)},
         HTTP_200_OK,
     )
 
 
-def reset_password(request: HttpRequest, token: str):
+def reset_password(request: HttpRequest, token: str) -> tuple[dict, int]:
     data = request.data
     if "password" not in data or "confirmPassword" not in data:
         return (
@@ -68,3 +73,17 @@ def reset_password(request: HttpRequest, token: str):
     user.profile.save()
     user.save()
     return ({"details": "Password reset done "}, HTTP_200_OK)
+
+
+def get_device_info(request: HttpRequest) -> tuple[str, str]:
+    # Get the User-Agent string from the request headers
+    user_agent_string = request.META.get("HTTP_USER_AGENT", "")
+
+    # Parse the User-Agent string
+    user_agent = parse(user_agent_string)
+
+    # Get the operating system and browser name
+    operating_system = f"{user_agent.os.family} {user_agent.os.version_string}"
+    browser_name = f"{user_agent.browser.family} {user_agent.browser.version_string}"
+
+    return operating_system, browser_name

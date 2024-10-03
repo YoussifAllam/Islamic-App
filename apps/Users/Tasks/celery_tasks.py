@@ -1,21 +1,26 @@
 from celery import shared_task
-from django.core.mail import send_mail
-from django.conf import settings
+from django.core.mail import EmailMessage
+import logging
+# Get an instance of a logger
+logger = logging.getLogger('myapp')
 
 
 @shared_task
-def send_email_task(user_id: int,  subject: str, message: str) -> None:
-    from apps.Users.models import User  # Import User model dynamically within the task
+def send_email_task(user_id: int, subject: str, message: str) -> None:
+    from apps.Users.models import User
 
-    # Fetch the user object
-    user = User.objects.get(id=user_id)
+    try:
+        # Fetch the user object
+        user = User.objects.get(id=user_id)
 
-    # Send the email
-    send_mail(
-        subject,
-        message,
-        settings.EMAIL_HOST_USER,
-        [user.email],
-        fail_silently=False,
-    )
-    print(f"\n Email sent to {user.email} \n")
+        # Send the email
+        email = EmailMessage(
+            subject=subject,
+            body=message,
+            to=[user.email],
+        )
+        email.content_subtype = "html"  # Set the email content type to HTML
+        email.send()
+        logger.info(f"Email sent successfully to {user.email}")
+    except Exception as e:
+        logger.error(f"Failed to send email: {e}")
