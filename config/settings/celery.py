@@ -20,6 +20,7 @@ app.autodiscover_tasks()
 
 CELERY_BROKER_URL = env("CELERY_BROKER_URL", default="amqp://guest:guest@localhost//")
 CELERY_RESULT_BACKEND = env("CELERY_RESULT_BACKEND")
+print(CELERY_BROKER_URL, '----', CELERY_RESULT_BACKEND) 
 
 CELERY_TIMEZONE = "UTC"
 
