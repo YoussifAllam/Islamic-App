@@ -1,9 +1,12 @@
 from config.env import env
-CURRENT_SITE = "emily.sa"
+CURRENT_SITE = "test.sa"
 rest_password_url = env('REST_PASSWORD_URL')
+support_email = 'support@test.com'
+CURRENT_SITE_COUNTARY = 'Egypt'
+CURRENT_SITE_LINK = 'test.com'
 
 
-def create_otp_template(user_name: str, OTP: int, user_email: str):  # ignore:E501
+def create_otp_template(user_name: str, OTP: int, user_email: str):  # type: ignore
     otp_template = f"""
     <!DOCTYPE html>
     <html lang="en">
@@ -76,15 +79,15 @@ def create_otp_template(user_name: str, OTP: int, user_email: str):  # ignore:E5
     </head>
 
     <body>
-    <!--Subject: Login Verification Required for Your Emily Account-->
+    <!--Subject: Login Verification Required for Your {CURRENT_SITE} Account-->
     <div class="container">
         <div class="header">
-        <a>Emily.sa</a>
+        <a>{CURRENT_SITE}.sa</a>
         </div>
         <br />
         <strong>Dear {user_name},</strong>
         <p>
-        We have received a login request for your Emily.sa account. For
+        We have received a login request for your {CURRENT_SITE}.sa account. For
         security purposes, please verify your identity by providing the
         following One-Time Password (OTP).
         <br />
@@ -101,20 +104,20 @@ def create_otp_template(user_name: str, OTP: int, user_email: str):  # ignore:E5
         <strong>Do not forward or give this code to anyone.</strong>
         <br />
         <br />
-        <strong>Thank you for using Emily.sa.</strong>
+        <strong>Thank you for using {CURRENT_SITE}.</strong>
         <br />
         <br />
         Best regards,
         <br />
-        <strong>Emily.sa</strong>
+        <strong>{CURRENT_SITE}</strong>
         </p>
 
         <hr style="border: none; border-top: 0.5px solid #131111" />
         <div class="footer">
         <p>This email can't receive replies.</p>
         <p>
-            For more information about Emily and your account, visit
-            <strong>Emily.sa</strong>
+            For more information about {CURRENT_SITE} and your account, visit
+            <strong>{CURRENT_SITE}</strong>
         </p>
         </div>
     </div>
@@ -126,10 +129,10 @@ def create_otp_template(user_name: str, OTP: int, user_email: str):  # ignore:E5
         </span>
         </div>
         <div class="email-info">
-        <a href="/">Emily.sa</a> | Saudi Arabia
+        <a href="/">{CURRENT_SITE}</a> | Saudi Arabia
         </div>
         <div class="email-info">
-        &copy; 2024 Emily.sa  All rights
+        &copy; 2024 {CURRENT_SITE}  All rights
         reserved.
         </div>
     </div>
@@ -140,8 +143,9 @@ def create_otp_template(user_name: str, OTP: int, user_email: str):  # ignore:E5
 
 
 def create_password_reset_template(
-    user_name: str, reset_link: str, operating_system: str, browser_name: str
-):
+        user_name: str, reset_link: str, operating_system: str,
+        browser_name: str
+) -> str:  # type: ignore
     reset_template = f""" # noqa
 		<!DOCTYPE html>
 		<html>[
@@ -557,8 +561,8 @@ def create_password_reset_template(
 		<table cellpadding="0" cellspacing="0" class="email-content" role="presentation" width="100%">
 			<tr>
 			<td class="email-masthead">
-				<a class="f-fallback email-masthead_name" href="https://emily.sa/" target="_blank">
-				Emily.sa
+				<a class="f-fallback email-masthead_name" href="{CURRENT_SITE_LINK}/" target="_blank">
+				{CURRENT_SITE}
 				</a>
 			</td>
 			</tr>
@@ -572,7 +576,7 @@ def create_password_reset_template(
 					<td class="content-cell">
 					<div class="f-fallback">
 						<h1>Hi {user_name},</h1>
-						<p>You recently requested to reset your password for your Emily account. Use the button below to
+						<p>You recently requested to reset your password for your {CURRENT_SITE} account. Use the button below to
 						reset it. <strong>This password reset is only valid for the next 10 minuts.</strong></p>
 						<!-- Action -->
 						<table align="center" cellpadding="0" cellspacing="0" class="body-action" role="presentation"
@@ -593,10 +597,10 @@ def create_password_reset_template(
 						</table>
 						<p>For security, this request was received from a {operating_system} device using {browser_name}. If
 						you did not request a password reset, please ignore this email or
-						<a href="mailto:support@emily.sa">contact support</a>
+						<a href="mailto:{support_email}">contact support</a>
 						if you have questions.</p>
 						<p>Thanks,
-						<br>The Emily.sa team</p>
+						<br>The {CURRENT_SITE} team</p>
 						<!-- Sub copy -->
 						<table class="body-sub" role="presentation">
 						<tr>
@@ -617,9 +621,9 @@ def create_password_reset_template(
 				<tr>
 					<td align="center" class="content-cell">
 					<p class="f-fallback sub align-center">
-						© 2024 Emily.sa All rights reserved.
-						Emily.sa
-						<br>Saudi Arabia.
+						© 2024 {CURRENT_SITE} All rights reserved.
+						{CURRENT_SITE}
+						<br>{CURRENT_SITE_COUNTARY}. 
 
 					</p>
 					</td>

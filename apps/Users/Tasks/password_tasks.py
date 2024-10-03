@@ -41,7 +41,7 @@ def forget_password(request: HttpRequest) -> tuple[dict, int]:
         operating_system,
         browser_name,
     )
-    
+
     celery_tasks.send_email_task.delay(user.id,  subject, body)
     return (
         {"details": "Password reset sent to {email}".format(email=email)},
