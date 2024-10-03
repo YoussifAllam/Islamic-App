@@ -18,3 +18,4 @@ def send_email_task(user_id: int,  subject: str, message: str) -> None:
         [user.email],
         fail_silently=False,
     )
+    print(f"\n Email sent to {user.email} \n")
