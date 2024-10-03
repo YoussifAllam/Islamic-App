@@ -1,10 +1,9 @@
 venv/
 db.sqlite3
 __pycache__/
-.env
+#todo .env 
 media
 staticfiles
 desktop.ini
 celerybeat-schedule
-#todo .env 
 debug.log
