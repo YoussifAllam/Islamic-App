@@ -38,7 +38,7 @@ def send_otp_to_user_email(user: User) -> dict:
     subject = "Your verification OTP on {0}".format(current_site)
     message = f"Your verification OTP is: {otp}"
     # user.email_user(subject, message)
-    celery_tasks.send_otp_email_task.delay(user.id, otp, subject, message)
+    celery_tasks.send_email_task.delay(user.id,  subject, message)
 
     refresh = RefreshToken.for_user(user)
     token_data = {

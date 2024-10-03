@@ -4,7 +4,7 @@ from django.conf import settings
 
 
 @shared_task
-def send_otp_email_task(user_id: int, otp: int, subject: str, message: str) -> None:
+def send_email_task(user_id: int,  subject: str, message: str) -> None:
     from apps.Users.models import User  # Import User model dynamically within the task
 
     # Fetch the user object
@@ -14,7 +14,7 @@ def send_otp_email_task(user_id: int, otp: int, subject: str, message: str) -> N
     send_mail(
         subject,
         message,
-        settings.DEFAULT_FROM_EMAIL,
+        settings.EMAIL_HOST_USER,
         [user.email],
         fail_silently=False,
     )
