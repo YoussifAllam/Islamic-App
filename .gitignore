@@ -6,4 +6,5 @@ media
 staticfiles
 desktop.ini
 celerybeat-schedule
-debug.log
+.mypy_cache
+db

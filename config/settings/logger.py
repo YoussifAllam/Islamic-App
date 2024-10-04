@@ -3,7 +3,7 @@ import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+UPPER_DIR = BASE_DIR.parent
 
 LOGGING = {
     "version": 1,
@@ -26,7 +26,7 @@ LOGGING = {
         },
         "file": {
             "class": "logging.FileHandler",
-            "filename": os.path.join(BASE_DIR, "debug.log"),
+            "filename": os.path.join(UPPER_DIR, "debug.log"),
             "formatter": "verbose",
         },
     },

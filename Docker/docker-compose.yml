@@ -20,8 +20,8 @@ services:
       bash -c "python manage.py makemigrations --noinput &&python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
     volumes:
       - ..:/code
-      - ./code/db:/code/db  # Ensure SQLite database file persists in the directory
       - media_data:/code/media # Ensure media directory persists in the directory
+      - ./db.sqlite3:/code/db.sqlite3 
     ports:
       - "8000:8000"
     env_file:
