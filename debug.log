@@ -1,0 +1,43 @@
+INFO 2024-10-07 10:27:58,529 autoreload Watching for file changes with StatReloader
+INFO 2024-10-07 10:44:42,653 autoreload Watching for file changes with StatReloader
+INFO 2024-10-07 10:47:25,602 autoreload Watching for file changes with StatReloader
+INFO 2024-10-07 10:47:45,548 autoreload Watching for file changes with StatReloader
+INFO 2024-10-07 10:49:00,984 autoreload Watching for file changes with StatReloader
+INFO 2024-10-07 10:50:29,511 autoreload /code/config/settings/celery.py changed, reloading.
+INFO 2024-10-07 10:50:31,689 autoreload Watching for file changes with StatReloader
+INFO 2024-10-07 10:52:30,273 basehttp "GET /admin HTTP/1.1" 301 0
+INFO 2024-10-07 10:52:30,319 basehttp "GET /admin/ HTTP/1.1" 302 0
+INFO 2024-10-07 10:52:30,423 basehttp "GET /admin/login/?next=/admin/ HTTP/1.1" 200 17686
+INFO 2024-10-07 10:52:30,500 basehttp "GET /static/admin/css/base.css HTTP/1.1" 200 21544
+INFO 2024-10-07 10:52:30,526 basehttp "GET /static/admin/css/nav_sidebar.css HTTP/1.1" 200 2810
+INFO 2024-10-07 10:52:30,528 basehttp "GET /static/admin/css/dark_mode.css HTTP/1.1" 200 2682
+INFO 2024-10-07 10:52:30,529 basehttp "GET /static/admin/css/login.css HTTP/1.1" 200 958
+INFO 2024-10-07 10:52:30,530 basehttp "GET /static/debug_toolbar/js/toolbar.js HTTP/1.1" 200 14601
+INFO 2024-10-07 10:52:30,531 basehttp "GET /static/debug_toolbar/css/toolbar.css HTTP/1.1" 200 16675
+INFO 2024-10-07 10:52:30,532 basehttp "GET /static/admin/css/responsive.css HTTP/1.1" 200 17905
+INFO 2024-10-07 10:52:30,539 basehttp "GET /static/admin/js/nav_sidebar.js HTTP/1.1" 200 3063
+INFO 2024-10-07 10:52:30,539 basehttp "GET /static/admin/js/theme.js HTTP/1.1" 200 1943
+INFO 2024-10-07 10:52:30,544 basehttp "GET /static/debug_toolbar/css/print.css HTTP/1.1" 200 43
+INFO 2024-10-07 10:52:30,593 basehttp "GET /static/debug_toolbar/js/utils.js HTTP/1.1" 200 4742
+WARNING 2024-10-07 10:52:30,749 log Not Found: /favicon.ico
+WARNING 2024-10-07 10:52:30,750 basehttp "GET /favicon.ico HTTP/1.1" 404 16158
+INFO 2024-10-07 10:52:41,796 basehttp "POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+INFO 2024-10-07 10:52:41,948 basehttp "GET /admin/ HTTP/1.1" 200 19674
+INFO 2024-10-07 10:52:42,000 basehttp "GET /static/admin/css/dashboard.css HTTP/1.1" 200 441
+INFO 2024-10-07 10:52:42,072 basehttp "GET /static/admin/img/icon-addlink.svg HTTP/1.1" 200 331
+INFO 2024-10-07 10:52:42,075 basehttp "GET /static/admin/img/icon-changelink.svg HTTP/1.1" 200 380
+INFO 2024-10-07 10:52:47,731 basehttp "POST /admin/logout/ HTTP/1.1" 200 17080
+INFO 2024-10-07 10:52:49,731 basehttp "GET /admin/ HTTP/1.1" 302 0
+INFO 2024-10-07 10:52:49,777 basehttp "GET /admin/login/?next=/admin/ HTTP/1.1" 200 17686
+INFO 2024-10-07 10:53:13,970 autoreload Watching for file changes with StatReloader
+INFO 2024-10-07 10:53:18,875 basehttp "POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+INFO 2024-10-07 10:53:19,023 basehttp "GET /admin/ HTTP/1.1" 200 19674
+INFO 2024-10-07 10:53:22,026 basehttp "POST /admin/logout/ HTTP/1.1" 200 17080
+INFO 2024-10-07 10:53:23,965 basehttp "GET /admin/ HTTP/1.1" 302 0
+INFO 2024-10-07 10:53:24,093 basehttp "GET /admin/login/?next=/admin/ HTTP/1.1" 200 17686
+INFO 2024-10-07 10:53:56,575 autoreload Watching for file changes with StatReloader
+INFO 2024-10-07 10:54:17,233 basehttp "POST /admin/login/?next=/admin/ HTTP/1.1" 302 0
+INFO 2024-10-07 10:54:17,379 basehttp "GET /admin/ HTTP/1.1" 200 19674
+INFO 2024-10-07 10:54:20,221 basehttp "POST /admin/logout/ HTTP/1.1" 200 17080
+INFO 2024-10-07 10:54:22,491 basehttp "GET /admin/ HTTP/1.1" 302 0
+INFO 2024-10-07 10:54:22,607 basehttp "GET /admin/login/?next=/admin/ HTTP/1.1" 200 17686

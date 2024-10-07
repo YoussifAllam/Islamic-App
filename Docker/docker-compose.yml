@@ -21,7 +21,7 @@ services:
     volumes:
       - ..:/code
       - media_data:/code/media # Ensure media directory persists in the directory
-      - ../db.sqlite3:/code/db.sqlite3 
+      - django_db_data:/code/db_volume
     ports:
       - "8000:8000"
     env_file:
@@ -39,7 +39,7 @@ services:
     command: celery -A config.settings.celery worker -l info
     volumes:
       - ..:/code
-      - ./code/db:/code/db  # Ensure SQLite database file persists in the directory
+      - ./code/db:/code/celery_db  # Ensure SQLite database file persists in the directory
     env_file: 
       - ../.env
     environment:
@@ -55,7 +55,7 @@ services:
     command: celery -A config.settings.celery beat -l info
     volumes:
       - ..:/code
-      - ./code/db:/code/db  # Ensure SQLite database file persists in the directory
+      - ./code/db:/code/celery_db  # Ensure SQLite database file persists in the directory
     env_file:
       - ../.env
     environment:

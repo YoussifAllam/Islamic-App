@@ -7,4 +7,7 @@ staticfiles
 desktop.ini
 celerybeat-schedule
 .mypy_cache
-db
+celery_db
+data
+db_volume
+debug.log

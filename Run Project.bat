@@ -1,2 +1,2 @@
 @echo off
-start powershell -NoExit -Command "$Host.UI.RawUI.WindowTitle = 'Islamic App1'; & code .; cd Docker; docker-compose up"
+start wt -p "Command Prompt" --title "Islamic App1" -d . cmd /k "code . && cd Docker && docker-compose up"
