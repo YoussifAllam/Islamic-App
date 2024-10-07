@@ -11,3 +11,5 @@ celery_db
 data
 db_volume
 debug.log
+volumes
+code
