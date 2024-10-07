@@ -1,9 +1,8 @@
 from config.env import env
-
 from .base import *  # noqa
 import os
 
-DEBUG = env.bool("DJANGO_DEBUG", default=False)
+DEBUG = False
 
 SECRET_KEY = env("SECRET_KEY")
 
@@ -31,3 +30,22 @@ DATABASES = {
         "PORT": os.environ.get("SQL_PORT", "5432"),
     }
 }
+
+PASSWORD_HASHERS = ["django.contrib.auth.hashers.MD5PasswordHasher"]
+AUTH_PASSWORD_VALIDATORS: list[dict[str, int]] = [
+    {
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'OPTIONS': {
+            'min_length': 8,
+        }
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    },
+]

@@ -83,7 +83,7 @@ class UserTests(APITestCase): # noqa
     def test_login_invalid(self):  # type: ignore
         """Test login with invalid credentials"""
         url = '/Auth/Login/'  # Login path is not named, so use hardcoded path
-        response = self.client.post(url, {'email': 'nonexisting@example.com', 
+        response = self.client.post(url, {'email': 'nonexisting@example.com',
                                           'password': 'wrongpassword'}, format='json')
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
