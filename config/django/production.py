@@ -12,13 +12,15 @@ CORS_ALLOW_ALL_ORIGINS = False
 CORS_ORIGIN_WHITELIST = env.list("CORS_ORIGIN_WHITELIST", default=[])
 
 SESSION_COOKIE_SECURE = env.bool("SESSION_COOKIE_SECURE", default=True)
-
-# https://docs.djangoproject.com/en/dev/ref/settings/#secure-proxy-ssl-header
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
-# https://docs.djangoproject.com/en/dev/ref/settings/#secure-ssl-redirect
 SECURE_SSL_REDIRECT = env.bool("SECURE_SSL_REDIRECT", default=True)
-# https://docs.djangoproject.com/en/dev/ref/middleware/#x-content-type-options-nosniff
 SECURE_CONTENT_TYPE_NOSNIFF = env.bool("SECURE_CONTENT_TYPE_NOSNIFF", default=True)
+CSRF_COOKIE_SECURE = True
+SECURE_BROWSER_XSS_FILTER = True  # Mitigates cross-site scripting attacks
+X_FRAME_OPTIONS = "DENY"  # Prevent clickjacking
+SECURE_HSTS_SECONDS = 31536000  # Enforces HTTPS for 1 year
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
 
 DATABASES = {
     "default": {
@@ -31,11 +33,20 @@ DATABASES = {
     }
 }
 
-PASSWORD_HASHERS = ["django.contrib.auth.hashers.MD5PasswordHasher"]
+PASSWORD_HASHERS = [
+    "django.contrib.auth.hashers.Argon2PasswordHasher",
+    "django.contrib.auth.hashers.PBKDF2PasswordHasher",
+    "django.contrib.auth.hashers.PBKDF2SHA1PasswordHasher",
+    "django.contrib.auth.hashers.BCryptSHA256PasswordHasher",
+]
 
-AUTH_PASSWORD_VALIDATORS: list[dict[str, int]] = [
+AUTH_PASSWORD_VALIDATORS: list[dict[str, int]] = [  # type: ignore
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+        'OPTIONS': {
+            'user_attributes': ('username', 'email', 'first_name', 'last_name'),
+            'max_similarity': 0.7,
+        }
     },
     {
         'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
