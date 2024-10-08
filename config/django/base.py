@@ -15,10 +15,6 @@ import os
 from config.env import BASE_DIR
 
 
-REST_FRAMEWORK: dict = {  # ignore
-
-}
-
 # Application definition
 DEFAULT_APPS = [
     'django.contrib.admin',
@@ -114,6 +110,7 @@ USE_I18N = True
 
 USE_TZ = True
 
+AUTH_USER_MODEL = "Users.User"
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
@@ -131,3 +128,4 @@ from config.settings.cors import *  # noqa
 from config.settings.sessions import *  # noqa
 from config.settings.email_sending import *  # noqa
 from config.settings.logger import *  # noqa: F403 F401 E402
+from config.settings.DRF import *  # noqa

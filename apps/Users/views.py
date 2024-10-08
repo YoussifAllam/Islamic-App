@@ -29,9 +29,9 @@ class SignUPViewSet(viewsets.ModelViewSet):
         serializer = self.serializer_class(data=request.data)
         if serializer.is_valid():
             user = serializer.save()
-            token_data = Auth_tasks.send_otp_to_user_email(user)
+            _ = Auth_tasks.send_otp_to_user_email(user)
             return Response(
-                {"user": serializer.data, "tokens": token_data}, status=HTTP_201_CREATED
+                {"user": serializer.data}, status=HTTP_201_CREATED
             )
         return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
@@ -63,8 +63,8 @@ class UserInfo(APIView):
         )
 
     def put(self, request: Request) -> Response:
-        Response_data = services.update_user_info(request)
-        return Response(Response_data, HTTP_200_OK)
+        Response_data, Response_status = services.update_user_info(request)
+        return Response(Response_data, Response_status)
 
 
 class ForgetPasswordView(APIView):
