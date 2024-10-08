@@ -31,6 +31,7 @@ url_Password = [
     path(
         "reset_password/<str:token>", views.ResetPasswordView.as_view(), name="reset_password"
     ),
+    path("update_password/", views.UpdatePasswordView.as_view(), name="update_password"),
 ]
 
 url_google_auth = [

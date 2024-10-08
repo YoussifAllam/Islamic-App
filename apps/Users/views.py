@@ -79,6 +79,14 @@ class ResetPasswordView(APIView):
         return Response(Response_data, status=Response_status)
 
 
+class UpdatePasswordView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request: Request) -> Response:
+        Response_data, Response_status = password_tasks.update_password(request)
+        return Response(Response_data, status=Response_status)
+
+
 class PublicApi(APIView):
     authentication_classes = ()
     permission_classes = ()

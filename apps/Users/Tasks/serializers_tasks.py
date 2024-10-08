@@ -12,10 +12,23 @@ def validate_email(value, User: User):
 
 
 def validate_password_strength(value):
-    if not re.search(r"\d", value) or not re.search("[A-Z]", value):
+    if not re.search(r"\d", value):
+        raise DjangoValidationError("Password must contain at least 1 digit.")
+
+    # Check if the password contains at least one uppercase letter
+    if not re.search(r"[A-Z]", value):
+        raise DjangoValidationError("Password must contain at least 1 uppercase letter.")
+
+    if not re.search(r"[a-z]", value):
+        raise DjangoValidationError("Password must contain at least 1 lowercase letter.")
+
+    # Optionally, check if the password contains at least one special character
+    if not re.search(r"[@$!%*?&_]", value):
         raise DjangoValidationError(
-            "Password should contain at least 1 number and 1 uppercase letter."
+            "Password must contain at least 1 special character (e.g., @$!%*?&)."
         )
+
+    # Call Django's built-in password validators
     validate_password(value)
     return value
 

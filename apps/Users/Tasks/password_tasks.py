@@ -2,12 +2,14 @@ from django.shortcuts import get_object_or_404
 from django.utils.crypto import get_random_string
 from datetime import datetime, timedelta
 from django.http import HttpRequest
+from rest_framework.request import Request
 from ..models import User
 from django.contrib.auth.hashers import make_password
 from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_200_OK
 from .. import constant
 from . import celery_tasks
 from user_agents import parse
+from ..serializers import ParamsSerializers
 
 current_site = constant.CURRENT_SITE
 
@@ -87,3 +89,28 @@ def get_device_info(request: HttpRequest) -> tuple[str, str]:
     browser_name = f"{user_agent.browser.family} {user_agent.browser.version_string}"
 
     return operating_system, browser_name
+
+
+def check_user_password_is_correct(user: User, provided_password: str) -> bool:
+    """
+    Check if the provided password matches the user's password.
+    """
+    # target_user = User.objects.get(id=user.id)
+    return user.check_password(provided_password)
+
+
+def update_password(request: Request) -> tuple[dict, int]:
+    data = request.data
+    ParamsSerializer = ParamsSerializers.UpdateUserPasswordSerializer(
+            data=data, context={'request': request}
+    )
+    if not ParamsSerializer.is_valid():
+        return ({"status": "error", "error": ParamsSerializer.errors}, HTTP_400_BAD_REQUEST)
+
+    user = request.user
+    validated_data = ParamsSerializer.validated_data
+    new_password = validated_data.get('new_password')
+
+    user.set_password(new_password)
+    user.save()
+    return ({"message": "Password updated successfully."}, HTTP_200_OK)
