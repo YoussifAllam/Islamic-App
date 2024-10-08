@@ -1,6 +1,5 @@
 from ..models import User
 from rest_framework.request import Request
-from django.contrib.auth.hashers import make_password
 from ..serializers import OutputSerializers, ParamsSerializers
 from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_200_OK
 from typing import Any
@@ -34,13 +33,12 @@ def check_user_password_is_correct(user: User, provided_password: str) -> bool:
     """
     Check if the provided password matches the user's password.
     """
-    target_user = User.objects.get(id=user.id)
-    return target_user.check_password(provided_password)
+    # target_user = User.objects.get(id=user.id)
+    return user.check_password(provided_password)
 
 
 def update_user_info(request: Request) -> tuple[dict[str, Any], int]:
     user = request.user
-    print(f"Request user: {request.user}")
     data = request.data
     serializer = ParamsSerializers.UpdateUserInfoSerializer(data=data)
     if not serializer.is_valid():
