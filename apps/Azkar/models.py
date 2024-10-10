@@ -1,5 +1,6 @@
 from django.db import models
 from uuid import uuid4
+from django_ckeditor_5.fields import CKEditor5Field
 # Create your models here.
 
 
@@ -46,12 +47,7 @@ class Zikr(models.Model):
         help_text="Zikr Category",
     )
 
-    zikr_content = models.CharField(
-        max_length=100,
-        unique=True,
-        verbose_name="zikr Content",
-        help_text="zikr Content",
-    )
+    zikr_content = CKEditor5Field('Text', config_name='extends')
 
     zikr_repetitions = models.IntegerField(
         verbose_name="Zikr repetitions",

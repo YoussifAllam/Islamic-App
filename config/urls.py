@@ -27,6 +27,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("prometheus/", include("django_prometheus.urls")),
     path('metrics/', csrf_exempt(make_wsgi_app())),
+    path("ckeditor5/", include('django_ckeditor_5.urls')),
 ]
 
 if settings.DEBUG:

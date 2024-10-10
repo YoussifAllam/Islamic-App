@@ -34,6 +34,7 @@ THIRD_PARTY_APPS = [
     "django_filters",
     "corsheaders",
     "django_prometheus",
+    'django_ckeditor_5',
 ]
 
 LOCAL_APPS = [
@@ -135,3 +136,4 @@ from config.settings.email_sending import *  # noqa
 from config.settings.logger import *  # noqa: F403 F401 E402
 from config.settings.DRF import *  # noqa
 from config.settings.JWT import *  # noqa
+from config.settings.CKEDITOR5 import *  # noqa
