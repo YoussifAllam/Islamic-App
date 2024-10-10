@@ -54,9 +54,15 @@ class Zikr(models.Model):
     )
 
     zikr_repetitions = models.IntegerField(
-        unique=True,
         verbose_name="Zikr repetitions",
         help_text="Zikr repetitions",
+    )
+
+    binifit = models.TextField(
+        verbose_name="Binifit",
+        help_text="Binifit",
+        null=True,
+        blank=True
     )
 
     class Meta:

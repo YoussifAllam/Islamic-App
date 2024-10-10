@@ -1,17 +1,19 @@
-from django.urls import path, include
+from django.urls import path
 from . import views
-from rest_framework.routers import DefaultRouter
-from rest_framework_simplejwt.views import TokenRefreshView
 
-router = DefaultRouter()
-# router.register(r"SignUp", views.SignUPViewSet, basename="SignUp")
 
 urlpatterns = [
-    path("", include(router.urls)),
-    # path(
-    #     "confirm-email/",
-    #     views.SignUPViewSet.as_view({"post": "confirm_email"}),
-    #     name="confirm-email",
-    # ),
+    path(
+        "get-azkar-categories/",
+        views.AzkarCategoriesViewSet.as_view({"get": "get_azkar_categories"}),
+        name="get_azkar_categories",
+    ),
+
+    path(
+        "get-azkar-by-category/",
+        views.AzkarViewSet.as_view({"get": "get_azkar_by_category"}),
+        name="get-azkar-by-category",
+    ),
+
 
 ]

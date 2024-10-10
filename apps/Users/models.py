@@ -39,11 +39,6 @@ class User(AbstractUser):
         verbose_name="user permissions",
     )
 
-    def save(self, *args, **kwargs):
-        if self.user_type == "vendor":
-            self.is_approved = False
-        super(User, self).save()
-
     def __str__(self) -> str:
         return self.username
 

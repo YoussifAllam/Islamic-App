@@ -26,6 +26,9 @@ DEFAULT_APPS = [
 ]
 
 THIRD_PARTY_APPS = [
+    "unfold",
+    "unfold.contrib.simple_history",
+    "unfold.contrib.filters",
     "rest_framework",
     "django_filters",
     "corsheaders",
@@ -38,7 +41,7 @@ LOCAL_APPS = [
 ]
 
 
-INSTALLED_APPS = DEFAULT_APPS + THIRD_PARTY_APPS + LOCAL_APPS
+INSTALLED_APPS = THIRD_PARTY_APPS + DEFAULT_APPS + LOCAL_APPS
 
 
 BASIC_MIDDLEWARE = [
