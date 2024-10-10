@@ -34,6 +34,7 @@ THIRD_PARTY_APPS = [
 
 LOCAL_APPS = [
  'apps.Users',
+ "apps.Azkar",
 ]
 
 
