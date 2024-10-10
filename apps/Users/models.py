@@ -5,6 +5,12 @@ from django.db.models.signals import post_save
 from uuid import uuid4
 
 
+class UserTypesChoices(models.TextChoices):
+    CUSTOMER = "customer"
+    VENDOR = "vendor"
+    NOTSET = "NotSet"
+
+
 class User(AbstractUser):
     uuid = models.UUIDField(default=uuid4, editable=False, unique=True)
     email_verified = models.BooleanField(default=False)
@@ -18,19 +24,25 @@ class User(AbstractUser):
     last_login = models.DateTimeField(auto_now_add=True)
 
     groups = models.ManyToManyField(
-        'auth.Group',
-        related_name='custom_user_set',  # Change this name to something unique
+        "auth.Group",
+        related_name="custom_user_set",  # Change this name to something unique
         blank=True,
-        help_text='The groups this user belongs to.',
-        verbose_name='groups',
+        help_text="The groups this user belongs to.",
+        verbose_name="groups",
     )
+
     user_permissions = models.ManyToManyField(
-        'auth.Permission',
-        related_name='custom_user_permissions_set',  # Change this name to something unique
+        "auth.Permission",
+        related_name="custom_user_permissions_set",  # Change this name to something unique
         blank=True,
-        help_text='Specific permissions for this user.',
-        verbose_name='user permissions',
+        help_text="Specific permissions for this user.",
+        verbose_name="user permissions",
     )
+
+    def save(self, *args, **kwargs):
+        if self.user_type == "vendor":
+            self.is_approved = False
+        super(User, self).save()
 
     def __str__(self) -> str:
         return self.username

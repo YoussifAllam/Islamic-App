@@ -13,17 +13,21 @@ url_Auth = [
         views.SignUPViewSet.as_view({"post": "confirm_email"}),
         name="confirm-email",
     ),
+
     path(
         "resend-otp/",
         views.SignUPViewSet.as_view({"post": "send_reset_otp"}),
         name="send-reset-otp",
     ),
+
     path("Login/", views.LoginView.as_view()),
+
     path(
         "refresh-Token/",
         TokenRefreshView.as_view(),
         name="token_refresh"
     ),
+
 ]
 
 url_Password = [

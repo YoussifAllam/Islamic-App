@@ -1,7 +1,8 @@
-from rest_framework.serializers import Serializer, CharField
+from rest_framework.serializers import Serializer, CharField, UUIDField
 from rest_framework.exceptions import ValidationError
 from django.contrib.auth.hashers import check_password
 from ..Tasks import serializers_tasks
+from ..models import UserTypesChoices
 
 
 class UpdateUserInfoSerializer(Serializer):
@@ -35,3 +36,14 @@ class UpdateUserPasswordSerializer(Serializer):
                 {"confirm_password": "New password and confirm password do not match."}
             )
         return data
+
+
+class ChooseUserTypeSerializer(Serializer):
+    user_id = UUIDField(required=True)
+    user_type = CharField(required=True)
+
+    def validate_user_type(self, value):
+        valid_choices = [choice[0] for choice in UserTypesChoices.choices]
+        if value not in valid_choices:
+            raise ValidationError("Invalid user type.")
+        return value

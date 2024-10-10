@@ -19,7 +19,7 @@ from rest_framework.request import Request
 from typing import Any
 from datetime import timedelta, datetime
 from . import celery_tasks
-from ..serializers import OutputSerializers
+from ..serializers import OutputSerializers, ParamsSerializers
 from .. import constant
 from ..models import User
 current_site = constant.CURRENT_SITE
@@ -129,6 +129,12 @@ def Login(request: HttpRequest) -> tuple[dict, int]:
                 HTTP_403_FORBIDDEN,
             )
 
+        if not user.is_approved:
+            return (
+                {"user_id": user.uuid, "message": "Please wait until admin approve your account"},
+                HTTP_403_FORBIDDEN,
+            )
+
         refresh = RefreshToken.for_user(user)
         data = {
             "refresh": str(refresh),
@@ -160,3 +166,24 @@ def Logout(self, request: Request, *args: Any, **kwargs: Any) -> dict:  # type: 
     token.blacklist()  # type: ignore
     logout(request)
     return {"status": "OK, goodbye"}
+
+
+def choose_user_type(request: Request) -> tuple[dict, int]:
+    params_serialzer = ParamsSerializers.ChooseUserTypeSerializer(
+        data=request.data, context={"request": request}
+    )
+    if not params_serialzer.is_valid():
+        return ({"status": "error", "error": params_serialzer.errors}, HTTP_400_BAD_REQUEST)
+
+    try:
+        user = User.objects.get(uuid=params_serialzer.validated_data["user_id"])
+    except User.DoesNotExist:
+        return ({"status": "error", "error": "User not found"}, HTTP_400_BAD_REQUEST)
+
+    target_user_type = params_serialzer.validated_data["user_type"]
+    user.user_type = target_user_type
+    if target_user_type == "vendor":
+        user.is_approved = False
+    user.save()
+
+    return ({"status": "success"}, HTTP_200_OK)
