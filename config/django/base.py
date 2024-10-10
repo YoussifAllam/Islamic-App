@@ -29,6 +29,7 @@ THIRD_PARTY_APPS = [
     "unfold",
     "unfold.contrib.simple_history",
     "unfold.contrib.filters",
+    'image_uploader_widget',
     "rest_framework",
     "django_filters",
     "corsheaders",
