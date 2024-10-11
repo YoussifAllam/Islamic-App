@@ -23,6 +23,7 @@ from prometheus_client import make_wsgi_app
 urlpatterns = [
     path("Users/", include("apps.Users.urls")),
     path("Azkar/", include("apps.Azkar.urls")),
+    path("supplication/", include("apps.supplication.urls")),
 
     path("admin/", admin.site.urls),
     path("prometheus/", include("django_prometheus.urls")),

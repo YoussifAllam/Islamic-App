@@ -40,6 +40,7 @@ THIRD_PARTY_APPS = [
 LOCAL_APPS = [
  'apps.Users',
  "apps.Azkar",
+ "apps.supplication"
 ]
 
 
@@ -123,6 +124,9 @@ AUTH_USER_MODEL = "Users.User"
 
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 STATIC_URL = "/static/"
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),  # If you have a 'static' directory in your project
+]
 # STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 MEDIA_URL = '/media/'
@@ -137,3 +141,4 @@ from config.settings.logger import *  # noqa: F403 F401 E402
 from config.settings.DRF import *  # noqa
 from config.settings.JWT import *  # noqa
 from config.settings.CKEDITOR5 import *  # noqa
+from config.settings.Unfold import *  # noqa

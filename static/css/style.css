@@ -1,0 +1,14 @@
+
+.login-background {
+    max-width: 100%; /* Limit the maximum width */
+    height: auto;    /* Maintain aspect ratio */
+}
+
+.login-form {
+    margin: 0 auto;  /* Center the form */
+    width: 300px;    /* Set a fixed width for the form */
+    padding: 20px;   /* Add some padding for aesthetics */
+    background: white; /* Background color for the form */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Add a shadow */
+}

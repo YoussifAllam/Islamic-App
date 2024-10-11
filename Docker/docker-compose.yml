@@ -9,6 +9,7 @@ volumes:
   grafana-data: {}
   django_db_data: {}  # Add a volume for Django database 
   media_data: {}
+  static_volume: {}
 
 services:
   django:
@@ -22,6 +23,7 @@ services:
       - ..:/code
       - media_data:/code/Docker/volumes/media # Ensure media directory persists in the directory
       - django_db_data:/code/Docker/volumes/db_volume
+      - static_volume:/code/staticfiles
     ports:
       - "8000:8000"
     env_file:
