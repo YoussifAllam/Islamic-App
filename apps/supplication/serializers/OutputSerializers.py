@@ -9,5 +9,5 @@ class supplicationSerializer(ModelSerializer):
         model = supplication
         fields = (
             "uuid",
-            "supplication_category",
+            "supplication_content",
         )
