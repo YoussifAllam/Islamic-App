@@ -69,6 +69,7 @@ BASIC_MIDDLEWARE = [
 
 MIDDLEWARE = (
     [
+        "whitenoise.middleware.WhiteNoiseMiddleware",
         "django_prometheus.middleware.PrometheusBeforeMiddleware",
         "corsheaders.middleware.CorsMiddleware",
     ]
