@@ -1,9 +1,10 @@
 from config.env import env
+
 CURRENT_SITE = "test.sa"
-rest_password_url = env('REST_PASSWORD_URL')
-support_email = 'support@test.com'
-CURRENT_SITE_COUNTARY = 'Egypt'
-CURRENT_SITE_LINK = 'test.com'
+rest_password_url = env("REST_PASSWORD_URL")
+support_email = "support@test.com"
+CURRENT_SITE_COUNTARY = "Egypt"
+CURRENT_SITE_LINK = "test.com"
 
 
 def create_otp_template(user_name: str, OTP: int, user_email: str):  # type: ignore
@@ -143,8 +144,7 @@ def create_otp_template(user_name: str, OTP: int, user_email: str):  # type: ign
 
 
 def create_password_reset_template(
-        user_name: str, reset_link: str, operating_system: str,
-        browser_name: str
+    user_name: str, reset_link: str, operating_system: str, browser_name: str
 ) -> str:  # type: ignore
     reset_template = f""" # noqa
 		<!DOCTYPE html>

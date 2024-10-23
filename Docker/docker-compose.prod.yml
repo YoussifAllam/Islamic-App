@@ -1,0 +1,142 @@
+version: '3.8'
+
+networks:
+  backend:
+    driver: bridge
+
+volumes:
+  prometheus_data: {}
+  grafana-data: {}
+  django_db_data: {}  
+  media_data: {}
+  postgres_data: {}
+  static_vol: {}
+
+services:
+
+  Islamic_app_postgres_db:
+    image: postgres:13
+    env_file:
+      - ../ENV/.env.prod
+    environment:
+      DJANGO_ENV: test
+      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - backend  # Attach to backend network
+
+  django:
+    build:
+      context: ..
+      dockerfile: Docker/Dockerfile
+    container_name: Islamic_app  
+    command: >
+      uvicorn config.asgi:application --host 0.0.0.0 --port 8000 --reload --reload-include '*.py' --reload-include '*.html'
+    restart: always
+    volumes:
+      - ..:/code
+      - media_data:/code/Docker/volumes/media # Ensure media directory persists in the directory
+      - django_db_data:/code/Docker/volumes/db_volume
+      - static_vol:/code/staticfiles
+    env_file:
+      - ../ENV/.env.prod
+    environment:
+      - DJANGO_ENV=prod
+      - DATABASE_HOST=Islamic_app_postgres_db
+    ports:
+      - "8000:8000"
+    depends_on:
+      - redis
+      - Islamic_app_postgres_db  # Reference the PostgreSQL service
+    networks:
+      - backend
+
+  nginx:
+    build: ../nginx
+    volumes:
+      - static_vol:/code/staticfiles
+      - media_data:/code/media
+    ports:
+      - "80:80"
+    depends_on:
+      - django
+    networks:
+      - backend
+
+  redis:
+    container_name: redis
+    image: redis:latest
+    networks:
+      - backend
+
+  celery:
+    build:
+      context: ..
+      dockerfile: Docker/Dockerfile
+    container_name: Islamic_celery
+    command: celery -A config.settings.celery worker -l info
+    volumes:
+      - ..:/code
+      - ./code/db:/code/Docker/volumes/celery_db  # Ensure SQLite database file persists in the directory
+    env_file: 
+      - ../ENV/.env.prod
+    environment:
+      - DJANGO_SETTINGS_MODULE=config.django  # Specify the settings module
+      - DJANGO_ENV=prod 
+    depends_on:
+      - redis
+    networks:
+      - backend
+
+  celery-beat:
+    build:
+      context: ..
+      dockerfile: Docker/Dockerfile
+    container_name: Islamic_celery_beat
+    command: celery -A config.settings.celery beat -l info
+    volumes:
+      - ..:/code
+      - ./code/db:/code/Docker/volumes/celery_db  # Ensure SQLite database file persists in the directory
+    env_file: 
+      - ../ENV/.env.prod
+    environment:
+      - DJANGO_SETTINGS_MODULE=config.django  # Specify the settings module
+      - DJANGO_ENV=prod
+    depends_on:
+      - redis
+    networks:
+      - backend
+      
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: Islamic_prometheus
+    restart: unless-stopped
+    volumes:
+      - ../prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/etc/prometheus/console_libraries'
+      - '--web.console.templates=/etc/prometheus/consoles'
+      - '--web.enable-lifecycle'
+    ports:
+      - 9090:9090
+    networks:
+      - backend
+
+  grafana:
+    image: grafana/grafana-oss:latest
+    container_name: Islamic_grafana
+    ports:
+      - '3000:3000'
+    volumes:
+      - grafana-data:/var/lib/grafana
+    restart: unless-stopped
+    networks:
+      - backend

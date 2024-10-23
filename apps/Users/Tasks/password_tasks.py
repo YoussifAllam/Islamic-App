@@ -44,7 +44,7 @@ def forget_password(request: HttpRequest) -> tuple[dict, int]:
         browser_name,
     )
 
-    celery_tasks.send_email_task.delay(user.id,  subject, body)
+    celery_tasks.send_email_task.delay(user.id, subject, body)
     return (
         {"details": "Password reset sent to {email}".format(email=email)},
         HTTP_200_OK,
@@ -102,14 +102,17 @@ def check_user_password_is_correct(user: User, provided_password: str) -> bool:
 def update_password(request: Request) -> tuple[dict, int]:
     data = request.data
     ParamsSerializer = ParamsSerializers.UpdateUserPasswordSerializer(
-            data=data, context={'request': request}
+        data=data, context={"request": request}
     )
     if not ParamsSerializer.is_valid():
-        return ({"status": "error", "error": ParamsSerializer.errors}, HTTP_400_BAD_REQUEST)
+        return (
+            {"status": "error", "error": ParamsSerializer.errors},
+            HTTP_400_BAD_REQUEST,
+        )
 
     user = request.user
     validated_data = ParamsSerializer.validated_data
-    new_password = validated_data.get('new_password')
+    new_password = validated_data.get("new_password")
 
     user.set_password(new_password)
     user.save()

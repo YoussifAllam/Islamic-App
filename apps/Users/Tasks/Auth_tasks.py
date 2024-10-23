@@ -22,6 +22,7 @@ from . import celery_tasks
 from ..serializers import OutputSerializers, ParamsSerializers
 from .. import constant
 from ..models import User
+
 current_site = constant.CURRENT_SITE
 
 
@@ -37,10 +38,10 @@ def send_otp_to_user_email(user: User) -> dict:
 
     subject = "Your verification OTP on {0}".format(current_site)
     html_message = constant.create_otp_template(
-                f"{user.first_name} {user.last_name}", otp, user.email
-            )
+        f"{user.first_name} {user.last_name}", otp, user.email
+    )
     # user.email_user(subject, message)
-    celery_tasks.send_email_task.delay(user.id,  subject, html_message)
+    celery_tasks.send_email_task.delay(user.id, subject, html_message)
 
     refresh = RefreshToken.for_user(user)
     token_data = {
@@ -96,9 +97,9 @@ def send_reset_otp(request: HttpRequest) -> tuple[dict, int]:
 
         subject = "Your reset OTP on {0}".format(current_site)
         html_message = constant.create_otp_template(
-                f"{user.first_name} {user.last_name}", otp, user.email
-            )
-        celery_tasks.send_email_task.delay(user.id,  subject, html_message)
+            f"{user.first_name} {user.last_name}", otp, user.email
+        )
+        celery_tasks.send_email_task.delay(user.id, subject, html_message)
 
         return ({"detail": "Reset OTP sent successfully."}, HTTP_200_OK)
     except User.DoesNotExist:
@@ -131,7 +132,10 @@ def Login(request: HttpRequest) -> tuple[dict, int]:
 
         if not user.is_approved:
             return (
-                {"user_id": user.uuid, "message": "Please wait until admin approve your account"},
+                {
+                    "user_id": user.uuid,
+                    "message": "Please wait until admin approve your account",
+                },
                 HTTP_403_FORBIDDEN,
             )
 
@@ -173,7 +177,10 @@ def choose_user_type(request: Request) -> tuple[dict, int]:
         data=request.data, context={"request": request}
     )
     if not params_serialzer.is_valid():
-        return ({"status": "error", "error": params_serialzer.errors}, HTTP_400_BAD_REQUEST)
+        return (
+            {"status": "error", "error": params_serialzer.errors},
+            HTTP_400_BAD_REQUEST,
+        )
 
     try:
         user = User.objects.get(uuid=params_serialzer.validated_data["user_id"])

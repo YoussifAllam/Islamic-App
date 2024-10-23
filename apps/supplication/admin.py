@@ -5,4 +5,7 @@ from .models import supplication
 
 @admin.register(supplication)
 class supplicationAdminClass(ModelAdmin):
-    list_display = ('uuid', "supplication_content",)
+    list_display = (
+        "uuid",
+        "supplication_content",
+    )

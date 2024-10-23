@@ -13,9 +13,8 @@ class AzkarCategoriesViewSet(viewsets.ModelViewSet):
     def get_azkar_categories(self, request: Request) -> Response:
         categories = selectors.get_all_azkar_categories()
         serializer = OutputSerializers.AzkarCategoriesSerializer(categories, many=True)
-        return Response({
-            'status': 'success',
-            'data': serializer.data}, status=HTTP_200_OK
+        return Response(
+            {"status": "success", "data": serializer.data}, status=HTTP_200_OK
         )
 
 

@@ -1,8 +1,9 @@
 from celery import shared_task
 from django.core.mail import EmailMessage
 import logging
+
 # Get an instance of a logger
-logger = logging.getLogger('myapp')
+logger = logging.getLogger("myapp")
 
 
 @shared_task

@@ -1,10 +1,10 @@
-from rest_framework.serializers import ( # noqa
+from rest_framework.serializers import (  # noqa
     ModelSerializer,
     CharField,
     BooleanField,
     ImageField,
     ValidationError,
-    EmailField
+    EmailField,
 )
 from ..models import User
 

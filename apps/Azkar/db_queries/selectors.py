@@ -10,19 +10,16 @@ def get_all_azkar_categories() -> Azkar_categories:
 
 def get_azkar_by_category(request: Request) -> tuple[dict[str, int]]:
     paramsSerializers = ParamsSerializers.AzkersParamsSerializer(
-        data=request.GET, context={'request': request}
+        data=request.GET, context={"request": request}
     )
     if not paramsSerializers.is_valid():
         return (
             {"status": "error", "error": paramsSerializers.errors},
-            HTTP_400_BAD_REQUEST
+            HTTP_400_BAD_REQUEST,
         )
 
     category_uuid = paramsSerializers.validated_data["category_uuid"]
     category_obj = Azkar_categories.objects.get(uuid=category_uuid)
     Azkar = category_obj.Azkar_set
     Azkar_serializer = OutputSerializers.ZikrSerializer(Azkar, many=True)
-    return (
-        {'status': 'success', "data": Azkar_serializer.data},
-        HTTP_200_OK
-    )
+    return ({"status": "success", "data": Azkar_serializer.data}, HTTP_200_OK)

@@ -30,9 +30,7 @@ class SignUPViewSet(viewsets.ModelViewSet):
         if serializer.is_valid():
             user = serializer.save()
             _ = Auth_tasks.send_otp_to_user_email(user)
-            return Response(
-                {"user": serializer.data}, status=HTTP_201_CREATED
-            )
+            return Response({"user": serializer.data}, status=HTTP_201_CREATED)
         return Response(serializer.errors, status=HTTP_400_BAD_REQUEST)
 
     @action(detail=False, methods=["post"])

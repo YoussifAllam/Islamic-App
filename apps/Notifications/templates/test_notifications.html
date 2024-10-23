@@ -1,0 +1,16 @@
+{% load static %}  <!-- Add this line at the top -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebSocket Notification Test</title>
+
+    <script src="{% static 'js/notifications.js' %}"></script>  <!-- Use static tag correctly -->
+</head>
+<body>
+    <h1>Notifications</h1>
+    <div id="notifications"></div>
+</body>
+</html>

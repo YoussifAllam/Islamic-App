@@ -57,6 +57,8 @@ class SignUpSerializer(ModelSerializer):
     def create(self, validated_data: dict):
         first_name = validated_data["first_name"]
         last_name = validated_data["last_name"]
-        unique_username = serializers_tasks.generate_unique_username(first_name, last_name, User)
+        unique_username = serializers_tasks.generate_unique_username(
+            first_name, last_name, User
+        )
         created_user = services.Create_user(validated_data, unique_username)
         return created_user

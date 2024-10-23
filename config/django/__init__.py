@@ -1,26 +1,20 @@
 # import os
 # from .base import * # noqa
-import socket
+from config.env import env
 
 
-def get_host_name() -> str:
-    return socket.gethostname()
+environment = env("ENVIRONMENT")
 
-
-current_host = get_host_name()
-
-
-if current_host == 'test machine name':
-    ENVIRONMENT = 'Test'
+if environment == "TEST":
     from .test import *  # noqa: F403 F401
 
-elif current_host == 'production_server_name':
-    ENVIRONMENT = 'Production'
+    print("\n Django is running in TEST mode", "TEST")
+
+elif environment == "Production":
     from .production import *  # noqa: F403 F401
 
 else:
-    ENVIRONMENT = 'Local'
-    from .local import *  # noqa: F403 F401 # Default to local if unsure
+    from .local import *  # noqa: F403 F401
 
 # Make ENVIRONMENT available as a module-level variable
-__all__ = ['ENVIRONMENT']
+__all__ = ["environment"]

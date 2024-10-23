@@ -13,34 +13,34 @@ url_Auth = [
         views.SignUPViewSet.as_view({"post": "confirm_email"}),
         name="confirm-email",
     ),
-
     path(
         "resend-otp/",
         views.SignUPViewSet.as_view({"post": "send_reset_otp"}),
         name="send-reset-otp",
     ),
-
     path("Login/", views.LoginView.as_view()),
-
-    path(
-        "refresh-Token/",
-        TokenRefreshView.as_view(),
-        name="token_refresh"
-    ),
-
+    path("refresh-Token/", TokenRefreshView.as_view(), name="token_refresh"),
 ]
 
 url_Password = [
-    path("forgot_password/", views.ForgetPasswordView.as_view(), name="forgot_password"),
     path(
-        "reset_password/<str:token>", views.ResetPasswordView.as_view(), name="reset_password"
+        "forgot_password/", views.ForgetPasswordView.as_view(), name="forgot_password"
     ),
-    path("update_password/", views.UpdatePasswordView.as_view(), name="update_password"),
+    path(
+        "reset_password/<str:token>",
+        views.ResetPasswordView.as_view(),
+        name="reset_password",
+    ),
+    path(
+        "update_password/", views.UpdatePasswordView.as_view(), name="update_password"
+    ),
 ]
 
 url_google_auth = [
     path(
-        "google-login/", views.GoogleLoginRedirectView.as_view(), name="google_login_redirect"
+        "google-login/",
+        views.GoogleLoginRedirectView.as_view(),
+        name="google_login_redirect",
     ),
     path(
         "google-callback/",

@@ -17,10 +17,14 @@ def validate_password_strength(value):
 
     # Check if the password contains at least one uppercase letter
     if not re.search(r"[A-Z]", value):
-        raise DjangoValidationError("Password must contain at least 1 uppercase letter.")
+        raise DjangoValidationError(
+            "Password must contain at least 1 uppercase letter."
+        )
 
     if not re.search(r"[a-z]", value):
-        raise DjangoValidationError("Password must contain at least 1 lowercase letter.")
+        raise DjangoValidationError(
+            "Password must contain at least 1 lowercase letter."
+        )
 
     # Optionally, check if the password contains at least one special character
     if not re.search(r"[@$!%*?&_]", value):

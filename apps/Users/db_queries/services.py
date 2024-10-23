@@ -45,7 +45,9 @@ def update_user_info(request: Request) -> tuple[dict[str, Any], int]:
         return ({"status": "error", "data": serializer.errors}, HTTP_400_BAD_REQUEST)
 
     provided_password = request.data.get("password")
-    if not check_user_password_is_correct(user=user, provided_password=provided_password):
+    if not check_user_password_is_correct(
+        user=user, provided_password=provided_password
+    ):
         return ({"message": "Password is uncorrect"}, HTTP_400_BAD_REQUEST)
 
     user.first_name = data.get("first_name", user.first_name)

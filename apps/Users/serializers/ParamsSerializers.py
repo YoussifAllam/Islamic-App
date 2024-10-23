@@ -15,7 +15,7 @@ class UpdateUserPasswordSerializer(Serializer):
     confirm_password = CharField(required=True)
 
     def validate_old_password(self, value):
-        user = self.context['request'].user
+        user = self.context["request"].user
         if not check_password(value, user.password):
             raise ValidationError("Old password is incorrect.")
         return value
@@ -28,8 +28,8 @@ class UpdateUserPasswordSerializer(Serializer):
 
     # Cross-field validation to check if new_password matches confirm_password
     def validate(self, data):
-        new_password = data.get('new_password')
-        confirm_password = data.get('confirm_password')
+        new_password = data.get("new_password")
+        confirm_password = data.get("confirm_password")
 
         if new_password != confirm_password:
             raise ValidationError(

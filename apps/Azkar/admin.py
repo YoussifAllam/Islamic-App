@@ -9,10 +9,15 @@ from django.db import models
 class AzkarCategoriesAdminClass(ModelAdmin):
     list_display = ("name",)
     formfield_overrides = {
-        models.ImageField: {'widget': ImageUploaderWidget},
+        models.ImageField: {"widget": ImageUploaderWidget},
     }
 
 
 @admin.register(Zikr)
 class AzkarAdminClass(ModelAdmin):
-    list_display = ('zikr_category', 'zikr_content', 'zikr_repetitions', 'binifit', )
+    list_display = (
+        "zikr_category",
+        "zikr_content",
+        "zikr_repetitions",
+        "binifit",
+    )

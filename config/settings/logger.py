@@ -18,7 +18,6 @@ LOGGING = {
             "style": "{",
         },
     },
-
     "handlers": {
         "console": {
             "class": "logging.StreamHandler",
@@ -30,7 +29,6 @@ LOGGING = {
             "formatter": "verbose",
         },
     },
-
     "loggers": {
         "django": {
             "handlers": ["console", "file"],
@@ -41,7 +39,6 @@ LOGGING = {
             "handlers": ["console", "file"],
             "level": "INFO",  # Set this to INFO to prevent DEBUG messages
             "propagate": True,
-        }
-
+        },
     },
 }
