@@ -2,7 +2,10 @@
 from django.templatetags.static import static
 from django.urls import reverse_lazy
 from django.utils.translation import gettext_lazy as _
-from ..django import ENVIRONMENT
+from config.env import env
+
+
+ENVIRONMENT = env("ENVIRONMENT")
 
 
 def dashboard_callback(request, context):
